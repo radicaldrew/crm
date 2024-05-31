@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useRecoilState } from 'recoil';
 
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
@@ -11,6 +12,8 @@ import { isDefined } from '~/utils/isDefined';
 import { isUndefinedOrNull } from '~/utils/isUndefinedOrNull';
 
 export const ProfilePictureUploader = () => {
+  const { t } = useTranslation();
+
   const [uploadPicture, { loading: isUploading }] =
     useUploadProfilePictureMutation();
 
@@ -69,7 +72,7 @@ export const ProfilePictureUploader = () => {
 
       return result;
     } catch (error) {
-      setErrorMessage('An error occured while uploading the picture.');
+      setErrorMessage(t('error_uploading_picture'));
     }
   };
 
@@ -95,7 +98,7 @@ export const ProfilePictureUploader = () => {
 
       setCurrentWorkspaceMember({ ...currentWorkspaceMember, avatarUrl: null });
     } catch (error) {
-      setErrorMessage('An error occured while removing the picture.');
+      setErrorMessage(t('error_removing_picture'));
     }
   };
 

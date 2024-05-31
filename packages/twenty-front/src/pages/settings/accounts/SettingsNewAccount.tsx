@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { IconSettings } from 'twenty-ui';
 
 import { SettingsNewAccountSection } from '@/settings/accounts/components/SettingsNewAccountSection';
@@ -6,13 +7,14 @@ import { SubMenuTopBarContainer } from '@/ui/layout/page/SubMenuTopBarContainer'
 import { Breadcrumb } from '@/ui/navigation/bread-crumb/components/Breadcrumb';
 
 export const SettingsNewAccount = () => {
+  const { t } = useTranslation();
   return (
-    <SubMenuTopBarContainer Icon={IconSettings} title="Settings">
+    <SubMenuTopBarContainer Icon={IconSettings} title={t('settings')}>
       <SettingsPageContainer>
         <Breadcrumb
           links={[
-            { children: 'Accounts', href: '/settings/accounts' },
-            { children: `New` },
+            { children: t('accounts'), href: '/settings/accounts' },
+            { children: t('new') },
           ]}
         />
         <SettingsNewAccountSection />

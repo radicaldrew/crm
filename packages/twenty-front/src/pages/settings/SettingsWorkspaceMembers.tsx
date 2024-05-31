@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { useRecoilValue } from 'recoil';
 import { H1Title, H2Title, IconSettings, IconTrash } from 'twenty-ui';
@@ -29,6 +30,7 @@ const StyledButtonContainer = styled.div`
 `;
 
 export const SettingsWorkspaceMembers = () => {
+  const { t } = useTranslation();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [workspaceMemberToDelete, setWorkspaceMemberToDelete] = useState<
     string | undefined
@@ -49,14 +51,14 @@ export const SettingsWorkspaceMembers = () => {
   };
 
   return (
-    <SubMenuTopBarContainer Icon={IconSettings} title="Settings">
+    <SubMenuTopBarContainer Icon={IconSettings} title={t('settings')}>
       <SettingsPageContainer>
-        <StyledH1Title title="Members" />
+        <StyledH1Title title={t('members')} />
         {currentWorkspace?.inviteHash && (
           <Section>
             <H2Title
               title="Invite"
-              description="Send an invitation to use Twenty"
+              description="Send an invitation to use crm"
             />
             <WorkspaceInviteLink
               inviteLink={`${window.location.origin}/invite/${currentWorkspace?.inviteHash}`}
@@ -65,7 +67,7 @@ export const SettingsWorkspaceMembers = () => {
         )}
         <Section>
           <H2Title
-            title="Members"
+            title={t('members')}
             description="Manage the members of your space here"
           />
           {workspaceMembers?.map((member) => (

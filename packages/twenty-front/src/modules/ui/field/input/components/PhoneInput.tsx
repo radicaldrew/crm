@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import ReactPhoneNumberInput from 'react-phone-number-input';
 import styled from '@emotion/styled';
+import { E164Number } from 'libphonenumber-js';
 import { TEXT_INPUT_STYLE } from 'twenty-ui';
 
 import { LightCopyIconButton } from '@/object-record/record-field/components/LightCopyIconButton';
 import { useRegisterInputEvents } from '@/object-record/record-field/meta-types/input/hooks/useRegisterInputEvents';
-import { PhoneCountryPickerDropdownButton } from '@/ui/input/components/internal/phone/components/PhoneCountryPickerDropdownButton';
 
 import 'react-phone-number-input/style.css';
 
@@ -66,7 +66,10 @@ export type PhoneInputProps = {
   onEscape: (newText: string) => void;
   onTab?: (newText: string) => void;
   onShiftTab?: (newText: string) => void;
-  onClickOutside: (event: MouseEvent | TouchEvent, inputValue: string) => void;
+  onClickOutside: (
+    event: MouseEvent | TouchEvent,
+    inputValue: E164Number | string,
+  ) => void;
   onChange?: (newText: string) => void;
   hotkeyScope: string;
   copyButton?: boolean;
@@ -81,19 +84,12 @@ export const PhoneInput = ({
   onShiftTab,
   onClickOutside,
   hotkeyScope,
-  onChange,
   copyButton = true,
 }: PhoneInputProps) => {
   const [internalValue, setInternalValue] = useState<string | undefined>(value);
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
-
-  const handleChange = (newValue: string) => {
-    setInternalValue(newValue);
-    onChange?.(newValue);
-  };
-
   useEffect(() => {
     setInternalValue(value);
   }, [value]);
@@ -112,15 +108,6 @@ export const PhoneInput = ({
 
   return (
     <StyledContainer ref={wrapperRef}>
-      <StyledCustomPhoneInput
-        autoFocus={autoFocus}
-        placeholder="Phone number"
-        value={value}
-        onChange={handleChange}
-        international={true}
-        withCountryCallingCode={true}
-        countrySelectComponent={PhoneCountryPickerDropdownButton}
-      />
       {copyButton && (
         <StyledLightIconButtonContainer ref={copyRef}>
           <LightCopyIconButton copyText={value} />

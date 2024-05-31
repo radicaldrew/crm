@@ -6,6 +6,7 @@ import {
   IconEditCircle,
   IconFocusCentered,
   IconNotes,
+  IconPhone,
   useIcons,
 } from 'twenty-ui';
 
@@ -167,11 +168,13 @@ export const EventRow = ({
       : linkedObjectMetadata?.labelSingular;
 
   const ActivityIcon = event.linkedObjectMetadataId
-    ? event.name.includes('note')
-      ? IconNotes
-      : event.name.includes('task')
-        ? IconCheckbox
-        : getIcon(linkedObjectMetadata?.icon)
+    ? event.name.includes('phonecall')
+      ? IconPhone
+      : event.name.includes('note')
+        ? IconNotes
+        : event.name.includes('task')
+          ? IconCheckbox
+          : getIcon(linkedObjectMetadata?.icon)
     : isEventType('created')
       ? IconCirclePlus
       : isEventType('updated')

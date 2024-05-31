@@ -2,7 +2,7 @@ import { Tooltip } from 'react-tooltip';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useRecoilValue } from 'recoil';
-import { Avatar, IconCheckbox, IconNotes } from 'twenty-ui';
+import { Avatar, IconCheckbox, IconNotes, IconPhone } from 'twenty-ui';
 
 import { useOpenActivityRightDrawer } from '@/activities/hooks/useOpenActivityRightDrawer';
 import { timelineActivityWithoutTargetsFamilyState } from '@/activities/timeline/states/timelineActivityWithoutTargetsFamilyState';
@@ -194,6 +194,9 @@ export const TimelineActivity = ({
                 )}
                 {activityForTimeline.type === 'Task' && (
                   <IconCheckbox size={theme.icon.size.sm} />
+                )}
+                {activityForTimeline.type === 'PhoneCall' && (
+                  <IconPhone size={theme.icon.size.sm} />
                 )}
               </StyledIconContainer>
               {(activityForTimeline.type === 'Note' ||

@@ -6,6 +6,7 @@ import {
   IconMail,
   IconNotes,
   IconPaperclip,
+  IconPhone,
   IconTimelineEvent,
 } from 'twenty-ui';
 
@@ -13,6 +14,7 @@ import { Calendar } from '@/activities/calendar/components/Calendar';
 import { EmailThreads } from '@/activities/emails/components/EmailThreads';
 import { Attachments } from '@/activities/files/components/Attachments';
 import { Notes } from '@/activities/notes/components/Notes';
+import { PhoneCalls } from '@/activities/phonecalls/components/PhoneCalls';
 import { ObjectTasks } from '@/activities/tasks/components/ObjectTasks';
 import { Timeline } from '@/activities/timeline/components/Timeline';
 import { TimelineQueryEffect } from '@/activities/timeline/components/TimelineQueryEffect';
@@ -52,6 +54,7 @@ type ShowPageRightContainerProps = {
   timeline?: boolean;
   tasks?: boolean;
   notes?: boolean;
+  phonecalls?: boolean;
   emails?: boolean;
   loading: boolean;
 };
@@ -61,6 +64,7 @@ export const ShowPageRightContainer = ({
   timeline,
   tasks,
   notes,
+  phonecalls,
   emails,
   loading,
 }: ShowPageRightContainerProps) => {
@@ -106,6 +110,12 @@ export const ShowPageRightContainer = ({
       hide: !notes,
     },
     {
+      id: 'phonecalls',
+      title: 'Phone Calls',
+      Icon: IconPhone,
+      hide: !phonecalls,
+    },
+    {
       id: 'emails',
       title: 'Emails',
       Icon: IconMail,
@@ -145,6 +155,9 @@ export const ShowPageRightContainer = ({
         <ObjectTasks targetableObject={targetableObject} />
       )}
       {activeTabId === 'notes' && <Notes targetableObject={targetableObject} />}
+      {activeTabId === 'phonecalls' && (
+        <PhoneCalls targetableObject={targetableObject} />
+      )}
       {activeTabId === 'files' && (
         <Attachments targetableObject={targetableObject} />
       )}

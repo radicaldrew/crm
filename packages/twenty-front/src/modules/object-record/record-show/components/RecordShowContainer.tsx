@@ -247,6 +247,7 @@ export const RecordShowContainer = ({
             timeline
             tasks
             notes
+            phonecalls
             emails
             loading={isPrefetchLoading || loading || recordLoading}
           />

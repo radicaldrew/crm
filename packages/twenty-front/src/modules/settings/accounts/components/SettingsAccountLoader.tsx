@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 import { Loader } from '@/ui/feedback/loader/components/Loader';
 import AnimatedPlaceholder from '@/ui/layout/animated-placeholder/components/AnimatedPlaceholder';
 import {
@@ -6,14 +8,17 @@ import {
   AnimatedPlaceholderEmptyTitle,
 } from '@/ui/layout/animated-placeholder/components/EmptyPlaceholderStyled';
 
-export const SettingsAccountLoader = () => (
-  <AnimatedPlaceholderEmptyContainer>
-    <AnimatedPlaceholder type="loadingAccounts" />
-    <AnimatedPlaceholderEmptyTextContainer>
-      <AnimatedPlaceholderEmptyTitle>
-        Loading account(s)
-      </AnimatedPlaceholderEmptyTitle>
-      <Loader />
-    </AnimatedPlaceholderEmptyTextContainer>
-  </AnimatedPlaceholderEmptyContainer>
-);
+export const SettingsAccountLoader = () => {
+  const { t } = useTranslation();
+  return (
+    <AnimatedPlaceholderEmptyContainer>
+      <AnimatedPlaceholder type="loadingAccounts" />
+      <AnimatedPlaceholderEmptyTextContainer>
+        <AnimatedPlaceholderEmptyTitle>
+          {t('loading_accounts')}
+        </AnimatedPlaceholderEmptyTitle>
+        <Loader />
+      </AnimatedPlaceholderEmptyTextContainer>
+    </AnimatedPlaceholderEmptyContainer>
+  );
+};

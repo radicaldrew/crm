@@ -8,7 +8,7 @@ import { GITHUB_LINK } from '../constants/GithubLink';
 
 export const GithubVersionLink = () => {
   const theme = useTheme();
-
+  return;
   return (
     <ActionLink href={GITHUB_LINK} target="_blank" rel="noreferrer">
       <IconBrandGithub size={theme.icon.size.md} />

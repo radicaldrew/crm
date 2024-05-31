@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { addMinutes, endOfDay, min, startOfDay } from 'date-fns';
 import { useRecoilValue } from 'recoil';
 import { H2Title, IconSettings } from 'twenty-ui';
@@ -23,6 +24,7 @@ import {
 } from '~/generated-metadata/graphql';
 
 export const SettingsAccountsCalendars = () => {
+  const { t } = useTranslation();
   const calendarSettingsEnabled = false;
   const currentWorkspaceMember = useRecoilValue(currentWorkspaceMemberState);
   const { records: accounts } = useFindManyRecords<ConnectedAccount>({
@@ -83,21 +85,21 @@ export const SettingsAccountsCalendars = () => {
   };
 
   return (
-    <SubMenuTopBarContainer Icon={IconSettings} title="Settings">
+    <SubMenuTopBarContainer Icon={IconSettings} title={t('settings')}>
       <SettingsPageContainer>
         <Breadcrumb
           links={[
             {
-              children: 'Accounts',
+              children: t('accounts'),
               href: getSettingsPagePath(SettingsPath.Accounts),
             },
-            { children: 'Calendars' },
+            { children: t('calendars') },
           ]}
         />
         <Section>
           <H2Title
-            title="Calendar settings"
-            description="Sync your calendars and set your preferences"
+            title={t('calendar_settings')}
+            description={t('calendar_settings_description')}
           />
           <SettingsAccountsCalendarChannelsListCard />
         </Section>

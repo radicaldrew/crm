@@ -1,3 +1,5 @@
+import { E164Number } from 'libphonenumber-js';
+
 import { PhoneInput } from '@/ui/field/input/components/PhoneInput';
 
 import { FieldInputOverlay } from '../../../../../ui/field/input/components/FieldInputOverlay';
@@ -28,30 +30,30 @@ export const PhoneFieldInput = ({
     persistPhoneField,
   } = usePhoneField();
 
-  const handleEnter = (newText: string) => {
+  const handleEnter = (newText: E164Number | string) => {
     onEnter?.(() => persistPhoneField(newText));
   };
 
-  const handleEscape = (newText: string) => {
+  const handleEscape = (newText: E164Number | string) => {
     onEscape?.(() => persistPhoneField(newText));
   };
 
   const handleClickOutside = (
     event: MouseEvent | TouchEvent,
-    newText: string,
+    newText: E164Number | string,
   ) => {
     onClickOutside?.(() => persistPhoneField(newText));
   };
 
-  const handleTab = (newText: string) => {
+  const handleTab = (newText: E164Number | string) => {
     onTab?.(() => persistPhoneField(newText));
   };
 
-  const handleShiftTab = (newText: string) => {
+  const handleShiftTab = (newText: E164Number | string) => {
     onShiftTab?.(() => persistPhoneField(newText));
   };
 
-  const handleChange = (newText: string) => {
+  const handleChange = (newText: E164Number | string) => {
     setDraftValue(newText);
   };
 

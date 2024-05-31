@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { IconCheckbox, IconSearch, IconSettings } from 'twenty-ui';
@@ -17,6 +18,7 @@ import { useIsTasksPage } from '../hooks/useIsTasksPage';
 
 export const MainNavigationDrawerItems = () => {
   const isMobile = useIsMobile();
+  const { t } = useTranslation();
   const { toggleCommandMenu } = useCommandMenu();
   const isTasksPage = useIsTasksPage();
   const currentUserDueTaskCount = useRecoilValue(currentUserDueTaskCountState);
@@ -30,13 +32,13 @@ export const MainNavigationDrawerItems = () => {
       {!isMobile && (
         <NavigationDrawerSection>
           <NavigationDrawerItem
-            label="Search"
+            label={t('search')}
             Icon={IconSearch}
             onClick={toggleCommandMenu}
             keyboard={['⌘', 'K']}
           />
           <NavigationDrawerItem
-            label="Settings"
+            label={t('settings')}
             to={'/settings/profile'}
             onClick={() => {
               setNavigationMemorizedUrl(location.pathname + location.search);
@@ -45,7 +47,7 @@ export const MainNavigationDrawerItems = () => {
           />
           <CurrentUserDueTaskCountEffect />
           <NavigationDrawerItem
-            label="Tasks"
+            label={t('tasks')}
             to="/tasks"
             active={isTasksPage}
             Icon={IconCheckbox}
@@ -57,7 +59,7 @@ export const MainNavigationDrawerItems = () => {
       <Favorites />
 
       <NavigationDrawerSection>
-        <NavigationDrawerSectionTitle label="Workspace" />
+        <NavigationDrawerSectionTitle label={t('workspace')} />
         <ObjectMetadataNavItems />
       </NavigationDrawerSection>
     </>

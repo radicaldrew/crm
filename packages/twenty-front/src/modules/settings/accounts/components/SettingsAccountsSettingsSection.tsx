@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { H2Title, IconCalendarEvent, IconMailCog } from 'twenty-ui';
@@ -15,31 +16,28 @@ const StyledCardsContainer = styled.div`
 
 export const SettingsAccountsSettingsSection = () => {
   const navigate = useNavigate();
-
+  const { t } = useTranslation();
   return (
     <Section>
-      <H2Title
-        title="Settings"
-        description="Configure your emails and calendar settings."
-      />
+      <H2Title title={t('calendar')} description={t('calendar_description')} />
       <StyledCardsContainer>
         <SettingsNavigationCard
           Icon={IconMailCog}
-          title="Emails"
+          title={t('emails')}
           onClick={() =>
             navigate(getSettingsPagePath(SettingsPath.AccountsEmails))
           }
         >
-          Set email visibility, manage your blocklist and more.
+          {t('emails_description')}
         </SettingsNavigationCard>
         <SettingsNavigationCard
           Icon={IconCalendarEvent}
-          title="Calendar"
+          title={t('settings')}
           onClick={() =>
             navigate(getSettingsPagePath(SettingsPath.AccountsCalendars))
           }
         >
-          Configure and customize your calendar preferences.
+          {t('calendar_description')}
         </SettingsNavigationCard>
       </StyledCardsContainer>
     </Section>

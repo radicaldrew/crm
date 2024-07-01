@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
@@ -25,6 +26,7 @@ export type AppNavigationDrawerProps = {
 export const AppNavigationDrawer = ({
   className,
 }: AppNavigationDrawerProps) => {
+  const { t } = useTranslation();
   const isMobile = useIsMobile();
   const isSettingsPage = useIsSettingsPage();
   const currentMobileNavigationDrawer = useRecoilValue(
@@ -42,7 +44,7 @@ export const AppNavigationDrawer = ({
   const drawerProps: NavigationDrawerProps = isSettingsDrawer
     ? {
         isSubMenu: true,
-        title: 'Settings',
+        title: t('settings'),
         children: <SettingsNavigationDrawerItems />,
         footer: <GithubVersionLink />,
       }

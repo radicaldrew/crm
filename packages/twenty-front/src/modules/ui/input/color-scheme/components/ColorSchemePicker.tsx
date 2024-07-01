@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 
 import { ColorScheme } from '@/workspace-member/types/WorkspaceMember';
@@ -35,31 +36,34 @@ export const ColorSchemePicker = ({
   value,
   onChange,
   className,
-}: ColorSchemePickerProps) => (
-  <StyledContainer className={className}>
-    <StyledCardContainer>
-      <ColorSchemeCard
-        onClick={() => onChange('Light')}
-        variant="Light"
-        selected={value === 'Light'}
-      />
-      <StyledLabel>Light</StyledLabel>
-    </StyledCardContainer>
-    <StyledCardContainer>
-      <ColorSchemeCard
-        onClick={() => onChange('Dark')}
-        variant="Dark"
-        selected={value === 'Dark'}
-      />
-      <StyledLabel>Dark</StyledLabel>
-    </StyledCardContainer>
-    <StyledCardContainer>
-      <ColorSchemeCard
-        onClick={() => onChange('System')}
-        variant="System"
-        selected={value === 'System'}
-      />
-      <StyledLabel>System settings</StyledLabel>
-    </StyledCardContainer>
-  </StyledContainer>
-);
+}: ColorSchemePickerProps) => {
+  const { t } = useTranslation();
+  return (
+    <StyledContainer className={className}>
+      <StyledCardContainer>
+        <ColorSchemeCard
+          onClick={() => onChange('Light')}
+          variant="Light"
+          selected={value === 'Light'}
+        />
+        <StyledLabel>{t('light')}</StyledLabel>
+      </StyledCardContainer>
+      <StyledCardContainer>
+        <ColorSchemeCard
+          onClick={() => onChange('Dark')}
+          variant="Dark"
+          selected={value === 'Dark'}
+        />
+        <StyledLabel>{t('dark')}</StyledLabel>
+      </StyledCardContainer>
+      <StyledCardContainer>
+        <ColorSchemeCard
+          onClick={() => onChange('System')}
+          variant="System"
+          selected={value === 'System'}
+        />
+        <StyledLabel>{t('systemsettings')}</StyledLabel>
+      </StyledCardContainer>
+    </StyledContainer>
+  );
+};

@@ -20,16 +20,19 @@ export const SignInUp = () => {
 
   const { signInUpStep, signInUpMode } = useSignInUp(form);
 
+  const showLogo = false;
+  const logoimg = showLogo ? <Logo /> : null;
+
   const title = useMemo(() => {
     if (
       signInUpStep === SignInUpStep.Init ||
       signInUpStep === SignInUpStep.Email
     ) {
-      return 'Welcome to Twenty';
+      return 'CRM';
     }
     return signInUpMode === SignInUpMode.SignIn
-      ? 'Sign in to Twenty'
-      : 'Sign up to Twenty';
+      ? 'Sign in to CRM'
+      : 'Sign up to CRM';
   }, [signInUpMode, signInUpStep]);
 
   if (isDefined(currentWorkspace)) {
@@ -38,9 +41,7 @@ export const SignInUp = () => {
 
   return (
     <>
-      <AnimatedEaseIn>
-        <Logo />
-      </AnimatedEaseIn>
+      <AnimatedEaseIn>{logoimg}</AnimatedEaseIn>
       <Title animate>{title}</Title>
       <SignInUpForm />
     </>

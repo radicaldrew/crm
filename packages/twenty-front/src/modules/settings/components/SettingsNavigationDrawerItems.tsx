@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useRecoilValue } from 'recoil';
 import {
   IconApps,
@@ -6,76 +7,70 @@ import {
   IconCode,
   IconColorSwatch,
   IconCurrencyDollar,
-  IconDoorEnter,
   IconHierarchy2,
   IconMail,
-  IconRocket,
   IconSettings,
   IconUserCircle,
   IconUsers,
 } from 'twenty-ui';
 
-import { useAuth } from '@/auth/hooks/useAuth';
 import { billingState } from '@/client-config/states/billingState';
 import { SettingsNavigationDrawerItem } from '@/settings/components/SettingsNavigationDrawerItem';
 import { SettingsPath } from '@/types/SettingsPath';
-import { NavigationDrawerItem } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerItem';
 import { NavigationDrawerItemGroup } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerItemGroup';
 import { NavigationDrawerSection } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerSection';
 import { NavigationDrawerSectionTitle } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerSectionTitle';
 
 export const SettingsNavigationDrawerItems = () => {
-  const { signOut } = useAuth();
-
+  const { t } = useTranslation();
   const billing = useRecoilValue(billingState);
 
   return (
     <>
       <NavigationDrawerSection>
-        <NavigationDrawerSectionTitle label="User" />
+        <NavigationDrawerSectionTitle label={t('user')} />
         <SettingsNavigationDrawerItem
-          label="Profile"
+          label={t('profile')}
           path={SettingsPath.ProfilePage}
           Icon={IconUserCircle}
         />
         <SettingsNavigationDrawerItem
-          label="Appearance"
+          label={t('appearance')}
           path={SettingsPath.Appearance}
           Icon={IconColorSwatch}
         />
 
         <NavigationDrawerItemGroup>
           <SettingsNavigationDrawerItem
-            label="Accounts"
+            label={t('accounts')}
             path={SettingsPath.Accounts}
             Icon={IconAt}
           />
           <SettingsNavigationDrawerItem
             level={2}
-            label="Emails"
+            label={t('emails')}
             path={SettingsPath.AccountsEmails}
             Icon={IconMail}
             matchSubPages
           />
           <SettingsNavigationDrawerItem
             level={2}
-            label="Calendars"
+            label={t('calendar')}
             path={SettingsPath.AccountsCalendars}
             Icon={IconCalendarEvent}
             matchSubPages
           />
         </NavigationDrawerItemGroup>
       </NavigationDrawerSection>
-
       <NavigationDrawerSection>
-        <NavigationDrawerSectionTitle label="Workspace" />
+        <NavigationDrawerSectionTitle label={t('workspace')} />
         <SettingsNavigationDrawerItem
-          label="General"
+          label={t('general')}
           path={SettingsPath.Workspace}
           Icon={IconSettings}
         />
         <SettingsNavigationDrawerItem
-          label="Members"
+          label={t('members')}
           path={SettingsPath.WorkspaceMembersPage}
           Icon={IconUsers}
         />
@@ -87,34 +82,20 @@ export const SettingsNavigationDrawerItems = () => {
           />
         )}
         <SettingsNavigationDrawerItem
-          label="Data model"
+          label={t('data model')}
           path={SettingsPath.Objects}
           Icon={IconHierarchy2}
           matchSubPages
         />
         <SettingsNavigationDrawerItem
-          label="Developers"
+          label={t('developers')}
           path={SettingsPath.Developers}
           Icon={IconCode}
         />
         <SettingsNavigationDrawerItem
-          label="Integrations"
+          label={t('integrations')}
           path={SettingsPath.Integrations}
           Icon={IconApps}
-        />
-      </NavigationDrawerSection>
-
-      <NavigationDrawerSection>
-        <NavigationDrawerSectionTitle label="Other" />
-        <SettingsNavigationDrawerItem
-          label="Releases"
-          path={SettingsPath.Releases}
-          Icon={IconRocket}
-        />
-        <NavigationDrawerItem
-          label="Logout"
-          onClick={signOut}
-          Icon={IconDoorEnter}
         />
       </NavigationDrawerSection>
     </>

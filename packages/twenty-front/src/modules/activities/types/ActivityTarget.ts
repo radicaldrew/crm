@@ -9,6 +9,7 @@ export type ActivityTarget = {
   companyId?: string | null;
   personId?: string | null;
   activity: Pick<Activity, 'id' | 'createdAt' | 'updatedAt'>;
+  phonecall: Pick<Activity, 'id' | 'createdAt' | 'updatedAt'>;
   person?: Pick<Person, 'id' | 'name' | 'avatarUrl'> | null;
   company?: Pick<Company, 'id' | 'name' | 'domainName'> | null;
   [key: string]: any;

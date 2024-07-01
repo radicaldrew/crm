@@ -1,4 +1,5 @@
 import { useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { isNonEmptyString } from '@sniptt/guards';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -100,6 +101,7 @@ export const StyledEmpty = styled.div`
 `;
 
 export const CommandMenu = () => {
+  const { t } = useTranslation();
   const { toggleCommandMenu, onItemClick, closeCommandMenu } = useCommandMenu();
   const commandMenuRef = useRef<HTMLDivElement>(null);
 
@@ -262,7 +264,7 @@ export const CommandMenu = () => {
           <StyledInput
             autoFocus
             value={commandMenuSearch}
-            placeholder="Search"
+            placeholder={t('search')}
             onChange={handleSearchChange}
           />
           {!isMobile && <StyledCancelText>Esc to cancel</StyledCancelText>}

@@ -258,7 +258,8 @@ export const SignInUpForm = () => {
       )}
       {signInUpStep === SignInUpStep.Init && (
         <FooterNote>
-          By using Twenty, you agree to the Terms of Service and Privacy Policy.
+          By using the crm, you agree to the Terms of Service and Privacy
+          Policy.
         </FooterNote>
       )}
     </>

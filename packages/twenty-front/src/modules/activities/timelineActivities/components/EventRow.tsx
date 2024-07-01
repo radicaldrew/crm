@@ -1,6 +1,15 @@
 import { useContext } from 'react';
 import styled from '@emotion/styled';
 import { useRecoilValue } from 'recoil';
+import {
+  IconCheckbox,
+  IconCirclePlus,
+  IconEditCircle,
+  IconFocusCentered,
+  IconNotes,
+  IconPhone,
+  useIcons,
+} from 'twenty-ui';
 
 import { useLinkedObject } from '@/activities/timeline/hooks/useLinkedObject';
 import { TimelineActivityContext } from '@/activities/timelineActivities/contexts/TimelineActivityContext';
@@ -97,11 +106,38 @@ export const EventRow = ({
 }: EventRowProps) => {
   const currentWorkspaceMember = useRecoilValue(currentWorkspaceMemberState);
 
+
   const { labelIdentifierValue } = useContext(TimelineActivityContext);
   const beautifiedCreatedAt = beautifyPastDateRelativeToNow(event.createdAt);
   const linkedObjectMetadataItem = useLinkedObject(
     event.linkedObjectMetadataId,
   );
+  const linkedObjectMetadata = useLinkedObject(event.linkedObjectMetadataId);
+
+  const linkedObjectLabel = event.name.includes('note')
+    ? 'note'
+    : event.name.includes('task')
+      ? 'task'
+      : linkedObjectMetadata?.labelSingular;
+
+  const ActivityIcon = event.linkedObjectMetadataId
+    ? event.name.includes('phonecall')
+      ? IconPhone
+      : event.name.includes('note')
+        ? IconNotes
+        : event.name.includes('task')
+          ? IconCheckbox
+          : getIcon(linkedObjectMetadata?.icon)
+    : isEventType('created')
+      ? IconCirclePlus
+      : isEventType('updated')
+        ? IconEditCircle
+        : IconFocusCentered;
+
+  const author =
+    event.workspaceMember?.name.firstName +
+    ' ' +
+    event.workspaceMember?.name.lastName;
 
   if (isUndefinedOrNull(currentWorkspaceMember)) {
     return null;

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { H1Title, H2Title, IconSettings } from 'twenty-ui';
 
@@ -14,31 +15,31 @@ const StyledH1Title = styled(H1Title)`
   margin-bottom: 0;
 `;
 
-export const SettingsProfile = () => (
-  <SubMenuTopBarContainer Icon={IconSettings} title="Settings">
-    <SettingsPageContainer>
-      <StyledH1Title title="Profile" />
-      <Section>
-        <H2Title title="Picture" />
-        <ProfilePictureUploader />
-      </Section>
-      <Section>
-        <H2Title title="Name" description="Your name as it will be displayed" />
-        <NameFields />
-      </Section>
-      <Section>
-        <H2Title
-          title="Email"
-          description="The email associated to your account"
-        />
-        <EmailField />
-      </Section>
-      <Section>
-        <ChangePassword />
-      </Section>
-      <Section>
-        <DeleteAccount />
-      </Section>
-    </SettingsPageContainer>
-  </SubMenuTopBarContainer>
-);
+export const SettingsProfile = () => {
+  const { t } = useTranslation();
+  return (
+    <SubMenuTopBarContainer Icon={IconSettings} title={t('settings')}>
+      <SettingsPageContainer>
+        <StyledH1Title title={t('profile')} />
+        <Section>
+          <H2Title title={t('picture')} />
+          <ProfilePictureUploader />
+        </Section>
+        <Section>
+          <H2Title title={t('name')} description={t('name_description')} />
+          <NameFields />
+        </Section>
+        <Section>
+          <H2Title title={t('email')} description={t('email_description')} />
+          <EmailField />
+        </Section>
+        <Section>
+          <ChangePassword />
+        </Section>
+        <Section>
+          <DeleteAccount />
+        </Section>
+      </SettingsPageContainer>
+    </SubMenuTopBarContainer>
+  );
+};

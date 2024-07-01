@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { useDebouncedCallback } from 'use-debounce';
@@ -29,6 +30,7 @@ export const NameFields = ({
   onFirstNameUpdate,
   onLastNameUpdate,
 }: NameFieldsProps) => {
+  const { t } = useTranslation();
   const currentUser = useRecoilValue(currentUserState);
   const [currentWorkspaceMember, setCurrentWorkspaceMember] = useRecoilState(
     currentWorkspaceMemberState,
@@ -110,14 +112,14 @@ export const NameFields = ({
   return (
     <StyledComboInputContainer>
       <TextInput
-        label="First Name"
+        label={t('firstname')}
         value={firstName}
         onChange={setFirstName}
         placeholder="Tim"
         fullWidth
       />
       <TextInput
-        label="Last Name"
+        label={t('lastname')}
         value={lastName}
         onChange={setLastName}
         placeholder="Cook"

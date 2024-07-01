@@ -11,5 +11,6 @@ export const SettingsAccountLoader = () => {
     >
       <Skeleton height={20} width={512} />
     </SkeletonTheme>
+
   );
 };

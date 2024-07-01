@@ -7,6 +7,7 @@ import {
   IconMail,
   IconNotes,
   IconPaperclip,
+  IconPhone,
   IconTimelineEvent,
 } from 'twenty-ui';
 
@@ -14,6 +15,7 @@ import { Calendar } from '@/activities/calendar/components/Calendar';
 import { EmailThreads } from '@/activities/emails/components/EmailThreads';
 import { Attachments } from '@/activities/files/components/Attachments';
 import { Notes } from '@/activities/notes/components/Notes';
+import { PhoneCalls } from '@/activities/phonecalls/components/PhoneCalls';
 import { ObjectTasks } from '@/activities/tasks/components/ObjectTasks';
 import { TimelineActivities } from '@/activities/timelineActivities/components/TimelineActivities';
 import { TimelineActivitiesQueryEffect } from '@/activities/timelineActivities/components/TimelineActivitiesQueryEffect';
@@ -50,6 +52,7 @@ type ShowPageRightContainerProps = {
   timeline?: boolean;
   tasks?: boolean;
   notes?: boolean;
+  phonecalls?: boolean;
   emails?: boolean;
   summary?: JSX.Element;
   isRightDrawer?: boolean;
@@ -61,6 +64,7 @@ export const ShowPageRightContainer = ({
   timeline,
   tasks,
   notes,
+  phonecalls,
   emails,
   loading,
   summary,
@@ -100,6 +104,12 @@ export const ShowPageRightContainer = ({
     { id: 'tasks', title: 'Tasks', Icon: IconCheckbox, hide: !tasks },
     { id: 'notes', title: 'Notes', Icon: IconNotes, hide: !notes },
     { id: 'files', title: 'Files', Icon: IconPaperclip, hide: !notes },
+    {
+      id: 'phonecalls',
+      title: 'Phone Calls',
+      Icon: IconPhone,
+      hide: !phonecalls,
+    },
     {
       id: 'emails',
       title: 'Emails',
@@ -151,7 +161,35 @@ export const ShowPageRightContainer = ({
           tabs={tabs}
         />
       </StyledTabListContainer>
+
       {renderActiveTabContent()}
+<!--
+      {activeTabId === 'timeline' && (
+        <>
+          <TimelineQueryEffect targetableObject={targetableObject} />
+          <Timeline loading={loading} targetableObject={targetableObject} />
+        </>
+      )}
+      {activeTabId === 'tasks' && (
+        <ObjectTasks targetableObject={targetableObject} />
+      )}
+      {activeTabId === 'notes' && <Notes targetableObject={targetableObject} />}
+      {activeTabId === 'phonecalls' && (
+        <PhoneCalls targetableObject={targetableObject} />
+      )}
+      {activeTabId === 'files' && (
+        <Attachments targetableObject={targetableObject} />
+      )}
+      {activeTabId === 'emails' && (
+        <EmailThreads targetableObject={targetableObject} />
+      )}
+      {activeTabId === 'calendar' && (
+        <Calendar targetableObject={targetableObject} />
+      )}
+      {activeTabId === 'logs' && (
+        <TimelineActivities targetableObject={targetableObject} />
+      )}
+--->
     </StyledShowPageRightContainer>
   );
 };

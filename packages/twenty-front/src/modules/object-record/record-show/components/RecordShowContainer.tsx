@@ -255,6 +255,7 @@ export const RecordShowContainer = ({
             timeline
             tasks
             notes
+            phonecalls
             emails
             isRightDrawer={isInRightDrawer}
             summary={summary}

@@ -1,4 +1,3 @@
-import { Profiler } from 'react';
 import { Interaction } from 'scheduler/tracing';
 
 import { logDebug } from '~/utils/logDebug';
@@ -36,9 +35,5 @@ export const TimingProfiler = ({ id, children }: TimingProfilerProps) => {
     );
   };
 
-  return (
-    <Profiler id={id} onRender={handleRender}>
-      {children}
-    </Profiler>
-  );
+  return;
 };

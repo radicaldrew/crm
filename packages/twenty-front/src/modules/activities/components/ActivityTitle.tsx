@@ -21,6 +21,7 @@ import {
   CheckboxShape,
   CheckboxSize,
 } from '@/ui/input/components/Checkbox';
+import { TextInput } from '@/ui/input/components/TextInput';
 import { usePreviousHotkeyScope } from '@/ui/utilities/hotkey/hooks/usePreviousHotkeyScope';
 import { useScopedHotkeys } from '@/ui/utilities/hotkey/hooks/useScopedHotkeys';
 import { isDefined } from '~/utils/isDefined';
@@ -173,6 +174,9 @@ export const ActivityTitle = ({ activityId }: ActivityTitleProps) => {
 
   const completed = isDefined(activity.completedAt);
 
+  const title =
+    activity.type === 'PhoneCall' ? 'Phone Call' : `${activity.type} title`;
+
   return (
     <StyledContainer>
       {activity.type === 'Task' && (
@@ -187,13 +191,21 @@ export const ActivityTitle = ({ activityId }: ActivityTitleProps) => {
         autoComplete="off"
         autoFocus
         ref={titleInputRef}
-        placeholder={`${activity.type} title`}
+        placeholder={title}
         onChange={(event) => handleTitleChange(event.target.value)}
         value={activityTitle}
         completed={completed}
         onBlur={handleBlur}
         onFocus={handleFocus}
       />
+      {activity.type === 'PhoneCall' && (
+        <TextInput
+          label="Source"
+          value="source"
+          placeholder="Source"
+          fullWidth
+        />
+      )}
     </StyledContainer>
   );
 };

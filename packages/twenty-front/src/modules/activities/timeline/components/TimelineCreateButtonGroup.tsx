@@ -1,5 +1,5 @@
 import { useSetRecoilState } from 'recoil';
-import { IconCheckbox, IconNotes, IconPaperclip } from 'twenty-ui';
+import { IconCheckbox, IconNotes, IconPaperclip, IconPhone } from 'twenty-ui';
 
 import { useOpenCreateActivityDrawer } from '@/activities/hooks/useOpenCreateActivityDrawer';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
@@ -36,6 +36,16 @@ export const TimelineCreateButtonGroup = ({
         onClick={() =>
           openCreateActivity({
             type: 'Task',
+            targetableObjects: [targetableObject],
+          })
+        }
+      />
+      <Button
+        Icon={IconPhone}
+        title="Phone Call"
+        onClick={() =>
+          openCreateActivity({
+            type: 'PhoneCall',
             targetableObjects: [targetableObject],
           })
         }

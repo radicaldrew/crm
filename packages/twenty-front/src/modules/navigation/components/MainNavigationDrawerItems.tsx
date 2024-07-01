@@ -10,7 +10,6 @@ import { Favorites } from '@/favorites/components/Favorites';
 import { ObjectMetadataNavItems } from '@/object-metadata/components/ObjectMetadataNavItems';
 import { NavigationDrawerItem } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerItem';
 import { NavigationDrawerSection } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerSection';
-import { NavigationDrawerSectionTitle } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerSectionTitle';
 import { navigationMemorizedUrlState } from '@/ui/navigation/states/navigationMemorizedUrlState';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 
@@ -58,6 +57,8 @@ export const MainNavigationDrawerItems = () => {
 
       <Favorites />
 
+      <ObjectMetadataNavItems isRemote={false} />
+      <ObjectMetadataNavItems isRemote={true} />
       <NavigationDrawerSection>
         <NavigationDrawerSectionTitle label={t('workspace')} />
         <ObjectMetadataNavItems />

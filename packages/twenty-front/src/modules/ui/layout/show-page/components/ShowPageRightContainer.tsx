@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import {
   IconCalendarEvent,
   IconCheckbox,
+  IconHome,
   IconMail,
   IconNotes,
   IconPaperclip,
@@ -16,23 +17,20 @@ import { Attachments } from '@/activities/files/components/Attachments';
 import { Notes } from '@/activities/notes/components/Notes';
 import { PhoneCalls } from '@/activities/phonecalls/components/PhoneCalls';
 import { ObjectTasks } from '@/activities/tasks/components/ObjectTasks';
-import { Timeline } from '@/activities/timeline/components/Timeline';
-import { TimelineQueryEffect } from '@/activities/timeline/components/TimelineQueryEffect';
 import { TimelineActivities } from '@/activities/timelineActivities/components/TimelineActivities';
+import { TimelineActivitiesQueryEffect } from '@/activities/timelineActivities/components/TimelineActivitiesQueryEffect';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { TabList } from '@/ui/layout/tab/components/TabList';
 import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
-import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 
-const StyledShowPageRightContainer = styled.div`
+const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
   flex: 1 0 0;
   flex-direction: column;
   justify-content: start;
-  overflow: ${() => (useIsMobile() ? 'none' : 'hidden')};
-  width: calc(100% + 4px);
+  width: 100%;
 `;
 
 const StyledTabListContainer = styled.div`
@@ -56,6 +54,8 @@ type ShowPageRightContainerProps = {
   notes?: boolean;
   phonecalls?: boolean;
   emails?: boolean;
+  summary?: JSX.Element;
+  isRightDrawer?: boolean;
   loading: boolean;
 };
 
@@ -67,48 +67,43 @@ export const ShowPageRightContainer = ({
   phonecalls,
   emails,
   loading,
+  summary,
+  isRightDrawer = false,
 }: ShowPageRightContainerProps) => {
-  const { activeTabIdState } = useTabList(TAB_LIST_COMPONENT_ID);
+  const { activeTabIdState } = useTabList(
+    TAB_LIST_COMPONENT_ID + isRightDrawer,
+  );
   const activeTabId = useRecoilValue(activeTabIdState);
 
-  const shouldDisplayCalendarTab =
-    targetableObject.targetObjectNameSingular ===
-      CoreObjectNameSingular.Company ||
-    targetableObject.targetObjectNameSingular === CoreObjectNameSingular.Person;
+  const targetObjectNameSingular =
+    targetableObject.targetObjectNameSingular as CoreObjectNameSingular;
 
-  const shouldDisplayLogTab = useIsFeatureEnabled('IS_EVENT_OBJECT_ENABLED');
+  const isCompanyOrPerson = [
+    CoreObjectNameSingular.Company,
+    CoreObjectNameSingular.Person,
+  ].includes(targetObjectNameSingular);
 
-  const shouldDisplayEmailsTab =
-    (emails &&
-      targetableObject.targetObjectNameSingular ===
-        CoreObjectNameSingular.Company) ||
-    targetableObject.targetObjectNameSingular === CoreObjectNameSingular.Person;
+  const shouldDisplayCalendarTab = isCompanyOrPerson;
+  const shouldDisplayEmailsTab = emails && isCompanyOrPerson;
 
-  const TASK_TABS = [
+  const isMobile = useIsMobile() || isRightDrawer;
+
+  const tabs = [
+    {
+      id: 'summary',
+      title: 'Summary',
+      Icon: IconHome,
+      hide: !isMobile,
+    },
     {
       id: 'timeline',
       title: 'Timeline',
       Icon: IconTimelineEvent,
-      hide: !timeline,
+      hide: !timeline || isRightDrawer,
     },
-    {
-      id: 'tasks',
-      title: 'Tasks',
-      Icon: IconCheckbox,
-      hide: !tasks,
-    },
-    {
-      id: 'notes',
-      title: 'Notes',
-      Icon: IconNotes,
-      hide: !notes,
-    },
-    {
-      id: 'files',
-      title: 'Files',
-      Icon: IconPaperclip,
-      hide: !notes,
-    },
+    { id: 'tasks', title: 'Tasks', Icon: IconCheckbox, hide: !tasks },
+    { id: 'notes', title: 'Notes', Icon: IconNotes, hide: !notes },
+    { id: 'files', title: 'Files', Icon: IconPaperclip, hide: !notes },
     {
       id: 'phonecalls',
       title: 'Phone Calls',
@@ -127,24 +122,48 @@ export const ShowPageRightContainer = ({
       Icon: IconCalendarEvent,
       hide: !shouldDisplayCalendarTab,
     },
-    {
-      id: 'logs',
-      title: 'Logs',
-      Icon: IconTimelineEvent,
-      hide: !shouldDisplayLogTab,
-      hasBetaPill: true,
-    },
   ];
 
+  const renderActiveTabContent = () => {
+    switch (activeTabId) {
+      case 'timeline':
+        return (
+          <>
+            <TimelineActivitiesQueryEffect
+              targetableObject={targetableObject}
+            />
+            <TimelineActivities targetableObject={targetableObject} />
+          </>
+        );
+      case 'summary':
+        return summary;
+      case 'tasks':
+        return <ObjectTasks targetableObject={targetableObject} />;
+      case 'notes':
+        return <Notes targetableObject={targetableObject} />;
+      case 'files':
+        return <Attachments targetableObject={targetableObject} />;
+      case 'emails':
+        return <EmailThreads targetableObject={targetableObject} />;
+      case 'calendar':
+        return <Calendar targetableObject={targetableObject} />;
+      default:
+        return <></>;
+    }
+  };
+
   return (
-    <StyledShowPageRightContainer>
+    <StyledShowPageRightContainer isMobile={isMobile}>
       <StyledTabListContainer>
         <TabList
           loading={loading}
-          tabListId={TAB_LIST_COMPONENT_ID}
-          tabs={TASK_TABS}
+          tabListId={TAB_LIST_COMPONENT_ID + isRightDrawer}
+          tabs={tabs}
         />
       </StyledTabListContainer>
+
+      {renderActiveTabContent()}
+<!--
       {activeTabId === 'timeline' && (
         <>
           <TimelineQueryEffect targetableObject={targetableObject} />
@@ -170,6 +189,7 @@ export const ShowPageRightContainer = ({
       {activeTabId === 'logs' && (
         <TimelineActivities targetableObject={targetableObject} />
       )}
+--->
     </StyledShowPageRightContainer>
   );
 };

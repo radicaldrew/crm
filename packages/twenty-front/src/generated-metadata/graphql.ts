@@ -36,6 +36,11 @@ export type Analytics = {
   success: Scalars['Boolean']['output'];
 };
 
+export type ApiConfig = {
+  __typename?: 'ApiConfig';
+  mutationMaximumAffectedRecords: Scalars['Float']['output'];
+};
+
 export type ApiKeyToken = {
   __typename?: 'ApiKeyToken';
   token: Scalars['String']['output'];
@@ -98,8 +103,8 @@ export type Billing = {
 export type BillingSubscription = {
   __typename?: 'BillingSubscription';
   id: Scalars['UUID']['output'];
-  interval?: Maybe<Scalars['String']['output']>;
-  status: Scalars['String']['output'];
+  interval?: Maybe<SubscriptionInterval>;
+  status: SubscriptionStatus;
 };
 
 export type BillingSubscriptionFilter = {
@@ -123,6 +128,12 @@ export type BooleanFieldComparison = {
   isNot?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** Visibility of the calendar channel */
+export enum CalendarChannelVisibility {
+  Metadata = 'METADATA',
+  ShareEverything = 'SHARE_EVERYTHING'
+}
+
 export type Captcha = {
   __typename?: 'Captcha';
   provider?: Maybe<CaptchaDriverType>;
@@ -130,15 +141,17 @@ export type Captcha = {
 };
 
 export enum CaptchaDriverType {
-  GoogleRecatpcha = 'GoogleRecatpcha',
+  GoogleRecaptcha = 'GoogleRecaptcha',
   Turnstile = 'Turnstile'
 }
 
 export type ClientConfig = {
   __typename?: 'ClientConfig';
+  api: ApiConfig;
   authProviders: AuthProviders;
   billing: Billing;
   captcha: Captcha;
+  chromeExtensionId?: Maybe<Scalars['String']['output']>;
   debugMode: Scalars['Boolean']['output'];
   sentry: Sentry;
   signInPrefilled: Scalars['Boolean']['output'];
@@ -366,6 +379,13 @@ export type LoginToken = {
   loginToken: AuthToken;
 };
 
+/** Visibility of the message channel */
+export enum MessageChannelVisibility {
+  Metadata = 'METADATA',
+  ShareEverything = 'SHARE_EVERYTHING',
+  Subject = 'SUBJECT'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
   activateWorkspace: Workspace;
@@ -384,14 +404,18 @@ export type Mutation = {
   deleteOneRelation: Relation;
   deleteOneRemoteServer: RemoteServer;
   deleteUser: User;
+  disablePostgresProxy: PostgresCredentials;
   emailPasswordResetLink: EmailPasswordResetLink;
+  enablePostgresProxy: PostgresCredentials;
   exchangeAuthorizationCode: ExchangeAuthCode;
   generateApiKeyToken: ApiKeyToken;
   generateJWT: AuthTokens;
   generateTransientToken: TransientToken;
   impersonate: Verify;
   renewToken: AuthTokens;
+  sendInviteLink: SendInviteLink;
   signUp: LoginToken;
+  skipSyncEmailOnboardingStep: OnboardingStepSuccess;
   syncRemoteTable: RemoteTable;
   syncRemoteTableSchemaChanges: RemoteTable;
   track: Analytics;
@@ -435,7 +459,7 @@ export type MutationChallengeArgs = {
 
 
 export type MutationCheckoutSessionArgs = {
-  recurringInterval: Scalars['String']['input'];
+  recurringInterval: SubscriptionInterval;
   successUrlPath?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -515,6 +539,11 @@ export type MutationImpersonateArgs = {
 
 export type MutationRenewTokenArgs = {
   appToken: Scalars['String']['input'];
+};
+
+
+export type MutationSendInviteLinkArgs = {
+  emails: Array<Scalars['String']['input']>;
 };
 
 
@@ -615,6 +644,22 @@ export type ObjectFieldsConnection = {
   pageInfo: PageInfo;
 };
 
+/** Onboarding status */
+export enum OnboardingStatus {
+  Completed = 'COMPLETED',
+  InviteTeam = 'INVITE_TEAM',
+  PlanRequired = 'PLAN_REQUIRED',
+  ProfileCreation = 'PROFILE_CREATION',
+  SyncEmail = 'SYNC_EMAIL',
+  WorkspaceActivation = 'WORKSPACE_ACTIVATION'
+}
+
+export type OnboardingStepSuccess = {
+  __typename?: 'OnboardingStepSuccess';
+  /** Boolean that confirms query was dispatched */
+  success: Scalars['Boolean']['output'];
+};
+
 export type PageInfo = {
   __typename?: 'PageInfo';
   /** The cursor of the last returned record. */
@@ -627,10 +672,18 @@ export type PageInfo = {
   startCursor?: Maybe<Scalars['ConnectionCursor']['output']>;
 };
 
+export type PostgresCredentials = {
+  __typename?: 'PostgresCredentials';
+  id: Scalars['UUID']['output'];
+  password: Scalars['String']['output'];
+  user: Scalars['String']['output'];
+  workspaceId: Scalars['String']['output'];
+};
+
 export type ProductPriceEntity = {
   __typename?: 'ProductPriceEntity';
   created: Scalars['Float']['output'];
-  recurringInterval: Scalars['String']['output'];
+  recurringInterval: SubscriptionInterval;
   stripePriceId: Scalars['String']['output'];
   unitAmount: Scalars['Float']['output'];
 };
@@ -655,6 +708,7 @@ export type Query = {
   findManyRemoteServersByType: Array<RemoteServer>;
   findOneRemoteServerById: RemoteServer;
   findWorkspaceFromInviteHash: Workspace;
+  getPostgresCredentials?: Maybe<PostgresCredentials>;
   getProductPrices: ProductPricesEntity;
   getTimelineCalendarEventsFromCompanyId: TimelineCalendarEventsWithTotal;
   getTimelineCalendarEventsFromPersonId: TimelineCalendarEventsWithTotal;
@@ -849,6 +903,12 @@ export enum RemoteTableStatus {
   Synced = 'SYNCED'
 }
 
+export type SendInviteLink = {
+  __typename?: 'SendInviteLink';
+  /** Boolean that confirms query was dispatched */
+  success: Scalars['Boolean']['output'];
+};
+
 export type Sentry = {
   __typename?: 'Sentry';
   dsn?: Maybe<Scalars['String']['output']>;
@@ -873,6 +933,24 @@ export enum SortNulls {
   NullsLast = 'NULLS_LAST'
 }
 
+export enum SubscriptionInterval {
+  Day = 'Day',
+  Month = 'Month',
+  Week = 'Week',
+  Year = 'Year'
+}
+
+export enum SubscriptionStatus {
+  Active = 'Active',
+  Canceled = 'Canceled',
+  Incomplete = 'Incomplete',
+  IncompleteExpired = 'IncompleteExpired',
+  PastDue = 'PastDue',
+  Paused = 'Paused',
+  Trialing = 'Trialing',
+  Unpaid = 'Unpaid'
+}
+
 export type Support = {
   __typename?: 'Support';
   supportDriver: Scalars['String']['output'];
@@ -881,7 +959,6 @@ export type Support = {
 
 export type Telemetry = {
   __typename?: 'Telemetry';
-  anonymizationEnabled: Scalars['Boolean']['output'];
   enabled: Scalars['Boolean']['output'];
 };
 
@@ -898,7 +975,7 @@ export type TimelineCalendarEvent = {
   participants: Array<TimelineCalendarEventParticipant>;
   startsAt: Scalars['DateTime']['output'];
   title: Scalars['String']['output'];
-  visibility: TimelineCalendarEventVisibility;
+  visibility: CalendarChannelVisibility;
 };
 
 export type TimelineCalendarEventParticipant = {
@@ -911,12 +988,6 @@ export type TimelineCalendarEventParticipant = {
   personId?: Maybe<Scalars['UUID']['output']>;
   workspaceMemberId?: Maybe<Scalars['UUID']['output']>;
 };
-
-/** Visibility of the calendar event */
-export enum TimelineCalendarEventVisibility {
-  Metadata = 'METADATA',
-  ShareEverything = 'SHARE_EVERYTHING'
-}
 
 export type TimelineCalendarEventsWithTotal = {
   __typename?: 'TimelineCalendarEventsWithTotal';
@@ -935,7 +1006,7 @@ export type TimelineThread = {
   participantCount: Scalars['Float']['output'];
   read: Scalars['Boolean']['output'];
   subject: Scalars['String']['output'];
-  visibility: Scalars['String']['output'];
+  visibility: MessageChannelVisibility;
 };
 
 export type TimelineThreadParticipant = {
@@ -1052,6 +1123,7 @@ export type User = {
   firstName: Scalars['String']['output'];
   id: Scalars['UUID']['output'];
   lastName: Scalars['String']['output'];
+  onboardingStatus?: Maybe<OnboardingStatus>;
   passwordHash?: Maybe<Scalars['String']['output']>;
   /** @deprecated field migrated into the AppTokens Table ref: https://github.com/twentyhq/twenty/issues/5021 */
   passwordResetToken?: Maybe<Scalars['String']['output']>;
@@ -1130,8 +1202,8 @@ export type Workspace = {
   id: Scalars['UUID']['output'];
   inviteHash?: Maybe<Scalars['String']['output']>;
   logo?: Maybe<Scalars['String']['output']>;
-  subscriptionStatus: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
+  workspaceMembersCount?: Maybe<Scalars['Float']['output']>;
 };
 
 

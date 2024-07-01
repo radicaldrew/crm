@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import { useRecoilValue } from 'recoil';
 import { H1Title, H2Title, IconSettings, IconTrash } from 'twenty-ui';
@@ -15,6 +14,7 @@ import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModa
 import { SubMenuTopBarContainer } from '@/ui/layout/page/SubMenuTopBarContainer';
 import { Section } from '@/ui/layout/section/components/Section';
 import { WorkspaceInviteLink } from '@/workspace/components/WorkspaceInviteLink';
+import { WorkspaceInviteTeam } from '@/workspace/components/WorkspaceInviteTeam';
 import { WorkspaceMemberCard } from '@/workspace/components/WorkspaceMemberCard';
 import { WorkspaceMember } from '@/workspace-member/types/WorkspaceMember';
 
@@ -30,7 +30,6 @@ const StyledButtonContainer = styled.div`
 `;
 
 export const SettingsWorkspaceMembers = () => {
-  const { t } = useTranslation();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [workspaceMemberToDelete, setWorkspaceMemberToDelete] = useState<
     string | undefined
@@ -51,14 +50,21 @@ export const SettingsWorkspaceMembers = () => {
   };
 
   return (
-    <SubMenuTopBarContainer Icon={IconSettings} title={t('settings')}>
+    <SubMenuTopBarContainer Icon={IconSettings} title="Settings">
       <SettingsPageContainer>
-        <StyledH1Title title={t('members')} />
+        <StyledH1Title title="Members" />
+        <Section>
+          <H2Title
+            title="Invite by email"
+            description="Send an invite email to your team"
+          />
+          <WorkspaceInviteTeam />
+        </Section>
         {currentWorkspace?.inviteHash && (
           <Section>
             <H2Title
-              title="Invite"
-              description="Send an invitation to use crm"
+              title="Or send an invite link"
+              description="Copy and send an invite link directly"
             />
             <WorkspaceInviteLink
               inviteLink={`${window.location.origin}/invite/${currentWorkspace?.inviteHash}`}
@@ -67,7 +73,7 @@ export const SettingsWorkspaceMembers = () => {
         )}
         <Section>
           <H2Title
-            title={t('members')}
+            title="Members"
             description="Manage the members of your space here"
           />
           {workspaceMembers?.map((member) => (

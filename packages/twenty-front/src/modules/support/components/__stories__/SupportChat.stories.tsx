@@ -7,11 +7,10 @@ import { currentUserState } from '@/auth/states/currentUserState';
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { supportChatState } from '@/client-config/states/supportChatState';
-import { PrefetchLoadingDecorator } from '~/testing/decorators/PrefetchLoadingDecorator';
 import { graphqlMocks } from '~/testing/graphqlMocks';
 import {
   mockDefaultWorkspace,
-  mockedUsersData,
+  mockedUserData,
   mockedWorkspaceMemberData,
 } from '~/testing/mock-data/users';
 
@@ -31,12 +30,11 @@ const meta: Meta<typeof SupportChat> = {
 
       setCurrentWorkspace(mockDefaultWorkspace);
       setCurrentWorkspaceMember(mockedWorkspaceMemberData);
-      setCurrentUser(mockedUsersData[0]);
+      setCurrentUser(mockedUserData);
       setSupportChat({ supportDriver: 'front', supportFrontChatId: '1234' });
 
       return <Story />;
     },
-    PrefetchLoadingDecorator,
   ],
   parameters: {
     msw: graphqlMocks,

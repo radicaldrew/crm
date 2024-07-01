@@ -39,14 +39,9 @@ export const SettingsAccounts = () => {
 
   return (
     <SubMenuTopBarContainer Icon={IconSettings} title="Settings">
-      <SettingsPageContainer
-        style={
-          loading
-            ? { height: '100%', boxSizing: 'border-box', width: '100%' }
-            : {}
-        }
-      >
-        <Breadcrumb links={[{ children: t('accounts') }]} />
+
+      <SettingsPageContainer>
+        <Breadcrumb links={[{ children:  t('accounts') }]} />
 
         {loading ? (
           <SettingsAccountLoader />

@@ -12,12 +12,12 @@ import { AttachmentWorkspaceEntity } from 'src/modules/attachment/standard-objec
 import { CommentWorkspaceEntity } from 'src/modules/activity/standard-objects/comment.workspace-entity';
 import { WorkspaceMemberWorkspaceEntity } from 'src/modules/workspace-member/standard-objects/workspace-member.workspace-entity';
 import { WorkspaceEntity } from 'src/engine/twenty-orm/decorators/workspace-entity.decorator';
-import { WorkspaceIsNotAuditLogged } from 'src/engine/twenty-orm/decorators/workspace-is-not-audit-logged.decorator';
 import { WorkspaceIsSystem } from 'src/engine/twenty-orm/decorators/workspace-is-system.decorator';
 import { WorkspaceField } from 'src/engine/twenty-orm/decorators/workspace-field.decorator';
 import { WorkspaceRelation } from 'src/engine/twenty-orm/decorators/workspace-relation.decorator';
 import { WorkspaceIsNullable } from 'src/engine/twenty-orm/decorators/workspace-is-nullable.decorator';
 import { BaseWorkspaceEntity } from 'src/engine/twenty-orm/base.workspace-entity';
+import { WorkspaceJoinColumn } from 'src/engine/twenty-orm/decorators/workspace-join-column.decorator';
 
 @WorkspaceEntity({
   standardId: STANDARD_OBJECT_IDS.activity,
@@ -27,7 +27,6 @@ import { BaseWorkspaceEntity } from 'src/engine/twenty-orm/base.workspace-entity
   description: 'An activity',
   icon: 'IconCheckbox',
 })
-@WorkspaceIsNotAuditLogged()
 @WorkspaceIsSystem()
 export class ActivityWorkspaceEntity extends BaseWorkspaceEntity {
   @WorkspaceField({
@@ -66,7 +65,7 @@ export class ActivityWorkspaceEntity extends BaseWorkspaceEntity {
     icon: 'IconCalendarEvent',
   })
   @WorkspaceIsNullable()
-  reminderAt: Date;
+  reminderAt: Date | null;
 
   @WorkspaceField({
     standardId: ACTIVITY_STANDARD_FIELD_IDS.dueAt,
@@ -76,7 +75,7 @@ export class ActivityWorkspaceEntity extends BaseWorkspaceEntity {
     icon: 'IconCalendarEvent',
   })
   @WorkspaceIsNullable()
-  dueAt: Date;
+  dueAt: Date | null;
 
   @WorkspaceField({
     standardId: ACTIVITY_STANDARD_FIELD_IDS.completedAt,
@@ -86,7 +85,7 @@ export class ActivityWorkspaceEntity extends BaseWorkspaceEntity {
     icon: 'IconCheck',
   })
   @WorkspaceIsNullable()
-  completedAt: Date;
+  completedAt: Date | null;
 
   @WorkspaceRelation({
     standardId: ACTIVITY_STANDARD_FIELD_IDS.activityTargets,
@@ -133,10 +132,12 @@ export class ActivityWorkspaceEntity extends BaseWorkspaceEntity {
     inverseSideTarget: () => WorkspaceMemberWorkspaceEntity,
     inverseSideFieldKey: 'authoredActivities',
     onDelete: RelationOnDeleteAction.SET_NULL,
-    joinColumn: 'authorId',
   })
   @WorkspaceIsNullable()
-  author: Relation<WorkspaceMemberWorkspaceEntity>;
+  author: Relation<WorkspaceMemberWorkspaceEntity> | null;
+
+  @WorkspaceJoinColumn('author')
+  authorId: string | null;
 
   @WorkspaceRelation({
     standardId: ACTIVITY_STANDARD_FIELD_IDS.assignee,
@@ -147,8 +148,10 @@ export class ActivityWorkspaceEntity extends BaseWorkspaceEntity {
     inverseSideTarget: () => WorkspaceMemberWorkspaceEntity,
     inverseSideFieldKey: 'assignedActivities',
     onDelete: RelationOnDeleteAction.SET_NULL,
-    joinColumn: 'assigneeId',
   })
   @WorkspaceIsNullable()
-  assignee: Relation<WorkspaceMemberWorkspaceEntity>;
+  assignee: Relation<WorkspaceMemberWorkspaceEntity> | null;
+
+  @WorkspaceJoinColumn('assignee')
+  assigneeId: string | null;
 }

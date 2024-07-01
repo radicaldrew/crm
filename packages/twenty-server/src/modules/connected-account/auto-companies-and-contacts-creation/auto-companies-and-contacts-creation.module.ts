@@ -7,11 +7,11 @@ import { CreateContactModule } from 'src/modules/connected-account/auto-companie
 import { ObjectMetadataRepositoryModule } from 'src/engine/object-metadata-repository/object-metadata-repository.module';
 import { PersonWorkspaceEntity } from 'src/modules/person/standard-objects/person.workspace-entity';
 import { WorkspaceMemberWorkspaceEntity } from 'src/modules/workspace-member/standard-objects/workspace-member.workspace-entity';
-import { MessageParticipantModule } from 'src/modules/messaging/services/message-participant/message-participant.module';
 import { WorkspaceDataSourceModule } from 'src/engine/workspace-datasource/workspace-datasource.module';
-import { CalendarEventParticipantWorkspaceEntity } from 'src/modules/calendar/standard-objects/calendar-event-participant.workspace-entity';
 import { CalendarEventParticipantModule } from 'src/modules/calendar/services/calendar-event-participant/calendar-event-participant.module';
 import { FeatureFlagEntity } from 'src/engine/core-modules/feature-flag/feature-flag.entity';
+import { MessagingCommonModule } from 'src/modules/messaging/common/messaging-common.module';
+import { AutoCompaniesAndContactsCreationMessageChannelListener } from 'src/modules/connected-account/auto-companies-and-contacts-creation/listeners/auto-companies-and-contacts-creation-message-channel.listener';
 
 @Module({
   imports: [
@@ -20,14 +20,16 @@ import { FeatureFlagEntity } from 'src/engine/core-modules/feature-flag/feature-
     ObjectMetadataRepositoryModule.forFeature([
       PersonWorkspaceEntity,
       WorkspaceMemberWorkspaceEntity,
-      CalendarEventParticipantWorkspaceEntity,
     ]),
-    MessageParticipantModule,
+    MessagingCommonModule,
     WorkspaceDataSourceModule,
     CalendarEventParticipantModule,
     TypeOrmModule.forFeature([FeatureFlagEntity], 'core'),
   ],
-  providers: [CreateCompanyAndContactService],
+  providers: [
+    CreateCompanyAndContactService,
+    AutoCompaniesAndContactsCreationMessageChannelListener,
+  ],
   exports: [CreateCompanyAndContactService],
 })
 export class AutoCompaniesAndContactsCreationModule {}
